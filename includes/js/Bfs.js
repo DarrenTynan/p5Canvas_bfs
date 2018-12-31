@@ -129,24 +129,32 @@ class Bfs
         // North
         if (node.y > 0)
         {
+            if (this.grid[node.x][node.y - 1].id == "wall")
+            return;
             if (this.grid[node.x][node.y - 1].visited == false)
             this.neighbors.push(grid[node.x][node.y - 1]);
         }
         // West
         if (node.x > 0)
         {
+            if (this.grid[node.x - 1][node.y].id == "wall")
+            return;
             if (this.grid[node.x - 1][node.y].visited == false)
             this.neighbors.push(grid[node.x - 1][node.y]);
         }
         // South
         if (node.y < this.rows)
         {
+            if (this.grid[node.x][node.y + 1].id == "wall")
+            return;
             if (this.grid[node.x][node.y + 1].visited == false)
             this.neighbors.push(grid[node.x][node.y + 1]);
         }
         // East
         if (node.x < this.cols)
         {
+            if (this.grid[node.x + 1][node.y].id == "wall")
+            return;
             if (this.grid[node.x + 1][node.y].visited == false)
             this.neighbors.push(grid[node.x + 1][node.y]);
         }
