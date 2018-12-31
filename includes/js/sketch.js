@@ -9,7 +9,6 @@ let grid = [];
 // The following are calculated from UI settings.
 let number_of_columns;
 let number_of_rows;
-let gridSize;
 let size_of_tile;
 let number_of_tiles;
 
@@ -43,32 +42,13 @@ function makeGrid()
     bfs = null;
 
     // Get grid size.
-    getGridSize();
+    var e = document.getElementById("selectGridSize");
+    number_of_tiles = e.options[e.selectedIndex].value;
 
     // Initialise the grid array.
     init_tiles();
 }
 
-function goForIt()
-{
-    if (source === null || target === null)
-    {
-        alert("Source and/or target not set!");
-        return;
-    }
-
-    // Initialise the Bfs.
-    bfs = new Bfs(grid, number_of_columns, number_of_rows);
-
-    // DEBUG - parameters of source and target passed for testing.
-    // grid[2][2].id = "source";
-    // source = grid[2][2];
-    // grid[number_of_columns-1][number_of_rows-1].id = "target";
-    // target = grid[number_of_columns-1][number_of_rows-1];
-
-    bfs.init(source, target);
-    bfs.findPath();
-}
 
 /**
  * Helper function to create 2d array.
@@ -205,12 +185,17 @@ function checkCanvasMouse()
 
 }
 
-/**
- * Get the UI options and save results.
- */
-function getGridSize()
+function goForIt()
 {
-    var e = document.getElementById("selectGridSize");
-    gridSize = e.options[e.selectedIndex].value;
-    number_of_tiles = gridSize;
+    if (source === null || target === null)
+    {
+        alert("Source and/or target not set!");
+        return;
+    }
+
+    // Initialise the Bfs.
+    bfs = new Bfs(grid, number_of_columns, number_of_rows);
+
+    bfs.init(source, target);
+    bfs.findPath();
 }
