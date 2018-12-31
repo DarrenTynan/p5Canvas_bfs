@@ -85,6 +85,7 @@ class Bfs
 
                 // alert("Found target!");
                 // break;
+                this.frontier.length = 0;
                 return;
             }
             
@@ -95,7 +96,7 @@ class Bfs
             for (var i = 0; i < this.neighbors.length; i++)
             {
                 // Check only non-visited neigbor.
-                if (this.neighbors[i].visited == false)
+                if (this.neighbors[i].visited == false && this.neighbors[i].id != "wall")
                 {
                     // Set as visited
                     this.neighbors[i].visited = true;
@@ -129,32 +130,24 @@ class Bfs
         // North
         if (node.y > 0)
         {
-            if (this.grid[node.x][node.y - 1].id == "wall")
-            return;
             if (this.grid[node.x][node.y - 1].visited == false)
             this.neighbors.push(grid[node.x][node.y - 1]);
         }
         // West
         if (node.x > 0)
         {
-            if (this.grid[node.x - 1][node.y].id == "wall")
-            return;
             if (this.grid[node.x - 1][node.y].visited == false)
             this.neighbors.push(grid[node.x - 1][node.y]);
         }
         // South
         if (node.y < this.rows)
         {
-            if (this.grid[node.x][node.y + 1].id == "wall")
-            return;
             if (this.grid[node.x][node.y + 1].visited == false)
             this.neighbors.push(grid[node.x][node.y + 1]);
         }
         // East
         if (node.x < this.cols)
         {
-            if (this.grid[node.x + 1][node.y].id == "wall")
-            return;
             if (this.grid[node.x + 1][node.y].visited == false)
             this.neighbors.push(grid[node.x + 1][node.y]);
         }

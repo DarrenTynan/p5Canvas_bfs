@@ -104,6 +104,7 @@ function draw()
             counter = 0;
             if (bfs != null && bfs.frontier.length > 0)
             {
+                // console.log(bfs.frontier.length);
                 bfs.findPath();
             }
         }

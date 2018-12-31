@@ -9,7 +9,14 @@ class GridNode
         this.drawX = _drawX;
         this.drawY = _drawY;
         // Id of node: blank, source, target, wall, etc.
-        this.id = "blank";
+        if (random(1) < 0.20)
+        {
+            this.id = "wall";
+        }
+        else
+        {
+            this.id = "blank";
+        }
         // Size of tile in pixels
         this.size = _size;
         // The offset in pixels to be subtracted.
