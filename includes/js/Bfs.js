@@ -49,8 +49,8 @@ class Bfs
      */
     findPath()
     {
-        while (this.frontier.length > 0)
-        {
+        // while (this.frontier.length > 0)
+        // {
             // Clear neighbors array
             this.neighbors = [];
 
@@ -83,8 +83,9 @@ class Bfs
                     pf.id = "path";
                 }
 
-                alert("Found target!");
-                break;
+                // alert("Found target!");
+                // break;
+                return;
             }
             
             // 2. Increase frontier (find all neighbors)
@@ -112,7 +113,7 @@ class Bfs
                     this.frontier.push(this.neighbors[i]);
                 }
             }
-        }
+        // }
 
     }
 

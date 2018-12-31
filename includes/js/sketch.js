@@ -1,6 +1,5 @@
-// Pointer to p5canvas
+// Pointers
 let p5canvas;
-
 let bfs;
 
 // The grid of nodes displayed on screen.
@@ -10,11 +9,12 @@ let grid = [];
 let number_of_columns;
 let number_of_rows;
 let size_of_tile;
-let number_of_tiles;
 
 // Temp for now!
 let source = null;
 let target = null;
+
+let animate = false;
 
 /**
  * p5 setup function.
@@ -35,50 +35,20 @@ function setup()
     p5canvas.mousePressed(checkCanvasMouse);
 
     makeGrid();
+
 }
 
 function makeGrid()
 {
     bfs = null;
+    grid = [];
 
     // Get grid size.
     var e = document.getElementById("selectGridSize");
-    number_of_tiles = e.options[e.selectedIndex].value;
+    size_of_tile = p5canvas.width / e.options[e.selectedIndex].value;
 
-    // Initialise the grid array.
-    init_tiles();
-}
-
-
-/**
- * Helper function to create 2d array.
- * 
- * @param {*} cols 
- * @param {*} rows 
- */
-function make2Darray(cols, rows)
-{
-    var arr = new Array(cols);
-    for (var i = 0; i < arr.length; i++)
-    {
-        arr[i] = new Array(rows);
-    }
-    return arr;
-}
-
-/**
- * Initialise 'grid' with Nodes.
- * Their size and position based on the size of the canvas.
- */
-function init_tiles()
-{
-    var w = Math.floor(p5canvas.width);
-    var h = Math.floor(p5canvas.height);
-
-    size_of_tile = p5canvas.width / number_of_tiles;
-
-    number_of_columns = Math.floor(w / size_of_tile);
-    number_of_rows = Math.floor(h / size_of_tile);
+    number_of_columns = Math.floor(p5canvas.width / size_of_tile);
+    number_of_rows = Math.floor(p5canvas.height / size_of_tile);
 
     // Create empty array.
     grid = make2Darray(number_of_columns, number_of_rows);
@@ -104,12 +74,40 @@ function init_tiles()
 }
 
 /**
+ * Helper function to create 2d array.
+ * 
+ * @param {*} cols 
+ * @param {*} rows 
+ */
+function make2Darray(cols, rows)
+{
+    var arr = new Array(cols);
+    for (var i = 0; i < arr.length; i++)
+    {
+        arr[i] = new Array(rows);
+    }
+    return arr;
+}
+
+/**
  * Loop through grid and call draw.
  */
+var counter = 0;
 function draw()
 {
     if (grid)
     {
+        counter = counter + 1;
+        // console.log(counter);
+        if (counter > 10)
+        {
+            counter = 0;
+            if (bfs != null && bfs.frontier.length > 0)
+            {
+                bfs.findPath();
+            }
+        }
+
         for (var i = 0; i < number_of_columns; i++)
         {
             for (var j = 0; j < number_of_rows; j++)
@@ -118,6 +116,7 @@ function draw()
             }
         }
     }
+
 
 }
 
@@ -157,11 +156,19 @@ function checkCanvasMouse()
     }
 
     // Check radio buttons.
+    if (document.getElementById("checkInfo").checked)
+    {
+        document.getElementById('debug_nodeX').innerHTML = nx;
+        document.getElementById('debug_nodeY').innerHTML = ny;
+    
+        document.getElementById('debug_parent').innerHTML = grid[ny][nx].parent.x;
+        // document.getElementById('debug_id').innerHTML = grid[ny][nx].id;
+    }
+
     if (document.getElementById("checkSource").checked)
     {
         grid[ny][nx].id = "source";
         source = grid[ny][nx];
-
     }
 
     if (document.getElementById("checkTarget").checked)
@@ -179,9 +186,6 @@ function checkCanvasMouse()
     {
         grid[ny][nx].id = "blank";
     }
-    
-    document.getElementById('debug_nodeX').innerHTML = nx;
-    document.getElementById('debug_nodeY').innerHTML = ny;
 
 }
 
@@ -197,5 +201,6 @@ function goForIt()
     bfs = new Bfs(grid, number_of_columns, number_of_rows);
 
     bfs.init(source, target);
+
     bfs.findPath();
 }

@@ -29,8 +29,13 @@
                     </tr>
 
                     <tr>
-                        <td>Parent Node::</td>
+                        <td>Node.parent:</td>
                         <td id="debug_parent"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Node.id:</td>
+                        <td id="debug_id"></td>
                     </tr>
     
                 </table>
@@ -81,7 +86,7 @@
     </div>
 
     <br>
-    <div id="p5canvas">
+    <div id="p5canvas" style="width: 50%;margin: 0 auto;">
         <!-- Space for p5 canvas here! -->
     </div>
 
@@ -94,7 +99,7 @@
 
         document.getElementById("selectGridSize").onchange = function()
         {
-            console.log("onChange");
+            console.log("onChange -> makegrid");
             makeGrid();
         }
     </script>
