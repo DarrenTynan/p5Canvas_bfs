@@ -22,44 +22,45 @@
                         <td>Nodex.x:</td>
                         <td id="debug_nodeX"></td>
                     </tr>
-
                     <tr>
                         <td>Node.y:</td>
                         <td id="debug_nodeY"></td>
                     </tr>
-
-                    <tr>
-                        <td>Node.parent:</td>
-                        <td id="debug_parent"></td>
-                    </tr>
-
                     <tr>
                         <td>Node.id:</td>
                         <td id="debug_id"></td>
                     </tr>
-    
                 </table>
             </fieldset>
         </div>
 
         <div id="center_panel">
-
-            <label for="selectGridSize">Grid Size: </label>
-            <select id="selectGridSize" name="selectGridSize">
-                <option value="5">5x5</option>
-                <option value="10" selected="selected">10x10</option>
-                <option value="15">15x15</option>
-                <option value="20">20x20</option>
-                <option value="30">30x30</option>
-                <option value="40">40x40</option>
-                <option value="50">50x50</option>
-                <option value="100">100x100</option>
-                <option value="150">150x150</option>
-            </select>
-
-            <br>
+            <fieldset>
+                <legend style="color:blue;font-weight:bold;">Grid Information</legend>
+                <label for="selectGridSize">Grid Size:</label>
+                <select id="selectGridSize" name="selectGridSize">
+                    <option value="5">5x5</option>
+                    <option value="10">10x10</option>
+                    <option value="15" selected="selected">15x15</option>
+                    <option value="20">20x20</option>
+                    <option value="30">30x30</option>
+                    <option value="40">40x40</option>
+                    <option value="50">50x50</option>
+                    <option value="100">100x100</option>
+                    <option value="150">150x150</option>
+                </select>
+                <br>
+                <label for="selectWallFrequency">Wall Frequency: </label>
+                <select id="selectWallFrequency">
+                    <option value="0">None</option>
+                    <option value=".1">10%</option>
+                    <option value=".2" selected="selected">20%</option>
+                    <option value=".3">30%</option>
+                    <option value=".4">40%</option>
+                </select>
+            </fieldset>
+            <button type="button" id="updateGrid" onclick="updateGrid()">Update Grid!</button>
             <button type="button" id="goForIt" onclick="goForIt()">Go For It!</button>
-
         </div>
 
         <div id="right_panel">
@@ -81,25 +82,46 @@
                     <label>Select Blank:</label>
                     <input type="radio" name="id" id="checkBlank" value="checkBlank">
             </fieldset>
-            
         </div>
     </div>
-
     <br>
-    <div id="p5canvas" style="width: 50%;margin: 0 auto;">
-        <!-- Space for p5 canvas here! -->
-    </div>
 
+    <div id="main_contents">
+        <div id="p5canvas">
+            <!-- Space for p5 canvas here! -->
+        </div>
+
+        <div id="description">
+            <h2>Breadth First Search</h2>
+            <p>In bfs we begin with a 'source' and a 'target' node and a queue for visiting nodes; the frontier. We also use a temporary array for the neighboring nodes.</P>
+            <p>From the 'source' node we check all neighbors: North, South, East and West.</p>
+            <p>Each of these neighbors is marked as visited, and removed from the frontier queue.</p>
+            <p>We continue iterating until we have searched all nodes or we break early if 'target found'.</p>
+            <p>The source node is blue, with the target node being red, and the wall being black.</p>
+        </div>
+    </div>
+    <p>After starting the search with 'Go For It!' the green nodes represent all the nodes on the frontier that have been checked. And if a path is found, this will be show in teal.</p>
+    <p>You can change the grid size and wall frequency via a dropdown or just Update Grid for a new random grid.</p>
+    <strong>Please note: </strong>The animation has been slowed, so, you have a chance to see the process.
+    <!-- Handle the UI elements -->
     <script>
+        function updateGrid()
+        {
+            makeGrid();
+        }
+
         function goForIt()
         {
-            console.log("go for it");
             goForIt();
         }
 
         document.getElementById("selectGridSize").onchange = function()
         {
-            console.log("onChange -> makegrid");
+            makeGrid();
+        }
+
+        document.getElementById("selectWallFrequency").onchange = function()
+        {
             makeGrid();
         }
     </script>

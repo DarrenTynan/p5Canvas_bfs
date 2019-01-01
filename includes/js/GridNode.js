@@ -1,6 +1,6 @@
 class GridNode
 {
-    constructor(_nodeX, _nodeY, _drawX, _drawY, _size)
+    constructor(_nodeX, _nodeY, _drawX, _drawY, _size, _wallFrequency)
     {
         // Node position in grid.
         this.x = _nodeX;
@@ -9,7 +9,7 @@ class GridNode
         this.drawX = _drawX;
         this.drawY = _drawY;
         // Id of node: blank, source, target, wall, etc.
-        if (random(1) < 0.20)
+        if (random(1) < _wallFrequency)
         {
             this.id = "wall";
         }
@@ -43,8 +43,8 @@ class GridNode
             case("blank"):
                 fill(255,255,255);
                 break;
-            case("debug"):
-                fill(150,0,155);
+            case("frontier"):
+                fill(0,255,0);
                 break;
             case("path"):
                 fill(0,255,255);

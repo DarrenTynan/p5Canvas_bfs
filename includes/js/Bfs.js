@@ -60,13 +60,6 @@ class Bfs
             // Are we done?
             if (this.currentNode == this.targetNode)
             {
-                // Reset the color
-                this.currentNode.id = "target";
-
-                // console.log("Done! Found: " + this.currentNode.id);
-
-                this.currentNode = this.targetNode;
-
                 // Build path from parents.
                 while (this.currentNode != this.sourceNode)
                 {
@@ -81,11 +74,11 @@ class Bfs
                 {
                     pf = this.path.dequeue();
                     pf.id = "path";
+                    pf.draw();
                 }
 
-                // alert("Found target!");
-                // break;
                 this.frontier.length = 0;
+                noLoop();
                 return;
             }
             
@@ -104,7 +97,7 @@ class Bfs
                     // GUI section.
                     if(this.neighbors[i].id != "source")
                     {
-                        this.neighbors[i].id = "debug";
+                        this.neighbors[i].id = "frontier";
                     }
 
                     // Set parent node for path creation.

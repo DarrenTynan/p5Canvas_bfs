@@ -26,7 +26,7 @@ function setup()
 
     // Create and set p5canvas size.
     p5canvas = createCanvas(p5canvas_width, p5canvas_width);
-    background(255);
+    // background(255);
 
     // Set as child of <div>
     p5canvas.parent("p5canvas");
@@ -35,16 +35,23 @@ function setup()
     p5canvas.mousePressed(checkCanvasMouse);
 
     makeGrid();
-
 }
 
 function makeGrid()
 {
+    // Clear vars for 'Update Grid!'.
+    background(255);
     bfs = null;
     grid = [];
+    source = null;
+    target = null;
+
+    // Get the wall frequncy
+    var e = document.getElementById("selectWallFrequency");
+    var wallFrequency = e.options[e.selectedIndex].value;
 
     // Get grid size.
-    var e = document.getElementById("selectGridSize");
+    e = document.getElementById("selectGridSize");
     size_of_tile = p5canvas.width / e.options[e.selectedIndex].value;
 
     number_of_columns = Math.floor(p5canvas.width / size_of_tile);
@@ -61,7 +68,7 @@ function makeGrid()
     {
         for (var j = 0; j < number_of_rows; j++)
         {
-            grid[i][j] = new GridNode(i, j, xPos, yPos, size_of_tile);
+            grid[i][j] = new GridNode(i, j, xPos, yPos, size_of_tile, wallFrequency);
             xPos += size_of_tile;
         }
         // Reset xPos to start of row.
@@ -69,6 +76,15 @@ function makeGrid()
 
         // And increase the y position for 1 node down.
         yPos += size_of_tile;
+    }
+
+    // Initial draw of grid.
+    for (var i = 0; i < number_of_columns; i++)
+    {
+        for (var j = 0; j < number_of_rows; j++)
+        {
+            grid[i][j].draw();
+        }
     }
 
 }
@@ -98,26 +114,26 @@ function draw()
     if (grid)
     {
         counter = counter + 1;
-        // console.log(counter);
         if (counter > 10)
         {
             counter = 0;
             if (bfs != null && bfs.frontier.length > 0)
             {
-                // console.log(bfs.frontier.length);
                 bfs.findPath();
             }
         }
 
-        for (var i = 0; i < number_of_columns; i++)
+        if (bfs != null && bfs.frontier.length > 0)
         {
-            for (var j = 0; j < number_of_rows; j++)
+            for (var i = 0; i < bfs.frontier.length; i++)
             {
-                grid[i][j].draw();
+                if (bfs.frontier[i].id != 'source')
+                {
+                    bfs.frontier[i].draw();
+                }
             }
         }
     }
-
 
 }
 
@@ -126,10 +142,6 @@ function draw()
  */
 function checkCanvasMouse()
 {
-    // Debud area. Set the debug information.
-    // document.getElementById('debug_mouseX').innerHTML = Math.floor(mouseX);
-    // document.getElementById('debug_mouseY').innerHTML = Math.floor(mouseY);
-
     var nx = 0;
     var ny = 0;
 
@@ -153,7 +165,6 @@ function checkCanvasMouse()
         // Node on grid identified.
         nx = Math.floor(grid_index_x);
         ny = Math.floor(grid_index_y);
-
     }
 
     // Check radio buttons.
@@ -161,35 +172,40 @@ function checkCanvasMouse()
     {
         document.getElementById('debug_nodeX').innerHTML = nx;
         document.getElementById('debug_nodeY').innerHTML = ny;
-    
-        document.getElementById('debug_parent').innerHTML = grid[ny][nx].parent.x;
-        // document.getElementById('debug_id').innerHTML = grid[ny][nx].id;
+        document.getElementById('debug_id').innerHTML = grid[ny][nx].id;
     }
 
     if (document.getElementById("checkSource").checked)
     {
         grid[ny][nx].id = "source";
         source = grid[ny][nx];
+        grid[ny][nx].draw();
     }
 
     if (document.getElementById("checkTarget").checked)
     {
         grid[ny][nx].id = "target";
         target = grid[ny][nx];
+        grid[ny][nx].draw();
     }
 
     if (document.getElementById("checkWall").checked)
     {
         grid[ny][nx].id = "wall";
+        grid[ny][nx].draw();
     }
 
     if (document.getElementById("checkBlank").checked)
     {
         grid[ny][nx].id = "blank";
+        grid[ny][nx].draw();
     }
 
 }
 
+/**
+ * Start the pathfinder if source and target are set.
+ */
 function goForIt()
 {
     if (source === null || target === null)
@@ -198,7 +214,7 @@ function goForIt()
         return;
     }
 
-    // Initialise the Bfs.
+    // Initialize the Bfs.
     bfs = new Bfs(grid, number_of_columns, number_of_rows);
 
     bfs.init(source, target);
