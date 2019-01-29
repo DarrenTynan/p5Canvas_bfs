@@ -9,7 +9,10 @@ The grid is a p5.js canvas, that is not responsive, so, you will need to refresh
 The Grid Size and Wall Frequency are setup by default, but can be changed from the dropdowns.
 If you LMB click on a Node then the action under Left Mouse will be issued.
 You select a Source and Target node before Go For It! too see the calculation and final path.
- 
+
+## What I learnt
+The Breadth First Search algorithm.
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
